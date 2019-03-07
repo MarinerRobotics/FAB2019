@@ -47,6 +47,8 @@ void LowerJacksInFront();
 void RaiseBoth();
 void LowerBoth();
 rev::CANEncoder frontJack_encoder = cANSparkMAXJacksFront->GetEncoder();
+void StopBack();
+void StopFront();
 };
 
 #endif

@@ -55,11 +55,11 @@ void TheJacks::RaiseJacksInBack(){
     double backJacksPos = backJack_encoder.GetPosition();
     if (backJacksPos > 125){
         cANSparkMAXJacksBack->SetClosedLoopRampRate(0);
-        Stop();
+        StopBack();
         frc::SmartDashboard::PutNumber("Back Jacks Limit", 4);
     }
     else{
-        cANSparkMAXJacksBack->SetClosedLoopRampRate(1);
+        cANSparkMAXJacksBack->SetClosedLoopRampRate(.3);
         cANSparkMAXJacksBack->Set(0.5);
         frc::SmartDashboard::PutNumber("Back Jacks Limit", 3);
     }
@@ -69,11 +69,11 @@ void TheJacks::RaiseJacksInBackSlow(){
     double backJacksPos = backJack_encoder.GetPosition();
     if (backJacksPos > 125){
         cANSparkMAXJacksBack->SetClosedLoopRampRate(0);
-        Stop();
+        StopBack();
         frc::SmartDashboard::PutNumber("Back Jacks Limit", 4);
     }
     else{
-        cANSparkMAXJacksBack->SetClosedLoopRampRate(1);
+        cANSparkMAXJacksBack->SetClosedLoopRampRate(.3);
         cANSparkMAXJacksBack->Set(0.25);
         frc::SmartDashboard::PutNumber("Back Jacks Limit", 3);
     }
@@ -82,13 +82,13 @@ void TheJacks::LowerJacksInBack(){
     double backJacksPos = backJack_encoder.GetPosition();
     frc::SmartDashboard::PutNumber("Back Jacks Encoder Pos", backJack_encoder.GetPosition());
      if (backJacksPos > 1){
-         cANSparkMAXJacksBack->SetClosedLoopRampRate(1);
+         cANSparkMAXJacksBack->SetClosedLoopRampRate(.3);
         cANSparkMAXJacksBack->Set(-0.5);
         frc::SmartDashboard::PutNumber("Back Jacks Limit", 0);
     }
     else {
         cANSparkMAXJacksBack->SetClosedLoopRampRate(0);
-        Stop();
+        StopBack();
         frc::SmartDashboard::PutNumber("Back Jacks Limit", 1);
     
     }
@@ -98,11 +98,11 @@ void TheJacks::RaiseJacksInFront(){
     double frontJacksPos = frontJack_encoder.GetPosition();
     if (frontJacksPos > 125){
         cANSparkMAXJacksFront->SetClosedLoopRampRate(0);
-        Stop();
+        StopFront();
         frc::SmartDashboard::PutNumber("Front Jacks Limit", 4);
     }
     else{
-        cANSparkMAXJacksFront->SetClosedLoopRampRate(1);
+        cANSparkMAXJacksFront->SetClosedLoopRampRate(.3);
         cANSparkMAXJacksFront->Set(0.5);
         frc::SmartDashboard::PutNumber("Front Jacks Limit", 3);
     }
@@ -112,11 +112,11 @@ void TheJacks::RaiseJacksInFrontSlow(){
     double frontJacksPos = frontJack_encoder.GetPosition();
     if (frontJacksPos > 125){
         cANSparkMAXJacksFront->SetClosedLoopRampRate(0);
-        Stop();
+        StopFront();
         frc::SmartDashboard::PutNumber("Front Jacks Limit", 4);
     }
     else{
-        cANSparkMAXJacksFront->SetClosedLoopRampRate(1);
+        cANSparkMAXJacksFront->SetClosedLoopRampRate(.3);
         cANSparkMAXJacksFront->Set(0.25);
         frc::SmartDashboard::PutNumber("Front Jacks Limit", 3);
     }
@@ -126,10 +126,12 @@ void TheJacks::RaiseBoth(){
     double backJacksPos = backJack_encoder.GetPosition();
     if (frontJacksPos > backJacksPos){
         RaiseJacksInFrontSlow();
+       //StopFront();
         RaiseJacksInBack();
     }
     else if (backJacksPos > frontJacksPos){
         RaiseJacksInBackSlow();
+       //StopBack();
         RaiseJacksInFront();
     }
     else {
@@ -145,18 +147,25 @@ void TheJacks::LowerJacksInFront(){
     frc::SmartDashboard::PutNumber("Front Jacks Encoder Pos", frontJack_encoder.GetPosition());
     double frontJacksPos = frontJack_encoder.GetPosition();
     if (frontJacksPos > 1){
-        cANSparkMAXJacksFront->SetClosedLoopRampRate(1);
+        cANSparkMAXJacksFront->SetClosedLoopRampRate(.3);
         cANSparkMAXJacksFront->Set(-0.5);
         frc::SmartDashboard::PutNumber("Front Jacks Limit", 0);
     }
     else {
         cANSparkMAXJacksFront->SetClosedLoopRampRate(0);
-        Stop();
+        //cANSparkMAXJacksFront->Set(-0.2);
+        StopFront();
         frc::SmartDashboard::PutNumber("Front Jacks Limit", 1);
     }
 }
 
 void TheJacks::Stop(){
     cANSparkMAXJacksBack->StopMotor();
+    cANSparkMAXJacksFront->StopMotor();
+}
+void TheJacks::StopBack(){
+    cANSparkMAXJacksBack->StopMotor();
+}
+void TheJacks::StopFront(){
     cANSparkMAXJacksFront->StopMotor();
 }
