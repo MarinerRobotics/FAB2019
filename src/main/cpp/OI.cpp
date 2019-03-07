@@ -26,14 +26,14 @@
 #include "Commands/ExtendArm.h"
 #include "Commands/LowerBackJacks.h"
 #include "Commands/LowerBoom.h"
-#include "Commands/LowerBothJacks.h"
+#include "Commands/LowerBothTheJacks.h"
 #include "Commands/LowerClaw.h"
 #include "Commands/LowerFontJacks.h"
 #include "Commands/OpenClaw.h"
 #include "Commands/PunchBall.h"
 #include "Commands/RaiseBackJacks.h"
 #include "Commands/RaiseBoom.h"
-#include "Commands/RaiseBothJacks.h"
+#include "Commands/RaiseBothTheJacks.h"
 #include "Commands/RaiseClaw.h"
 #include "Commands/RaiseFrontJacks.h"
 #include "Commands/RetractArm.h"
@@ -64,6 +64,10 @@ OI::OI() {
     a1->WhileHeld(new RetractArm());
     joystick1.reset(new frc::Joystick(0));
     
+    x3Back.reset(new frc::JoystickButton(joystick1.get(), 3));
+    x3Back->WhileHeld(new DriveBackJackedUp());
+    y4Drive.reset(new frc::JoystickButton(joystick1.get(), 4));
+    y4Drive->WhileHeld(new DriveForwardJackedUp());
     rightJoyPush.reset(new frc::JoystickButton(joystick1.get(), 10));
     rightJoyPush->WhileHeld(new CameraJoy());
     start8.reset(new frc::JoystickButton(joystick1.get(), 8));
@@ -71,22 +75,22 @@ OI::OI() {
     back7.reset(new frc::JoystickButton(joystick1.get(), 7));
     back7->WhileHeld(new LowerBackJacks());
     rB6.reset(new frc::JoystickButton(joystick1.get(), 6));
-    rB6->WhileHeld(new RaiseBothJacks());
+    rB6->WhileHeld(new RaiseBothTheJacks());
     lB5.reset(new frc::JoystickButton(joystick1.get(), 5));
-    lB5->WhileHeld(new LowerBothJacks());
+    lB5->WhileHeld(new LowerBothTheJacks());
     ltrig11.reset(new frc::JoystickButton(joystick1.get(), 2));
     ltrig11->WhenPressed(new DownShift());
     rtrig12.reset(new frc::JoystickButton(joystick1.get(), 1));
     rtrig12->WhenPressed(new UpShift());
 
     // SmartDashboard Buttons
+    frc::SmartDashboard::PutData("LowerBothTheJacks", new LowerBothTheJacks());
+    frc::SmartDashboard::PutData("RaiseBothTheJacks", new RaiseBothTheJacks());
     frc::SmartDashboard::PutData("CameraJoy", new CameraJoy());
     frc::SmartDashboard::PutData("retractArmConditionally", new retractArmConditionally());
     frc::SmartDashboard::PutData("ArmWatchBoom", new ArmWatchBoom());
     frc::SmartDashboard::PutData("ClawWithJoy", new ClawWithJoy());
     frc::SmartDashboard::PutData("BoomWithJoy", new BoomWithJoy());
-    frc::SmartDashboard::PutData("RaiseBothJacks", new RaiseBothJacks());
-    frc::SmartDashboard::PutData("LowerBothJacks", new LowerBothJacks());
     frc::SmartDashboard::PutData("LowerBackJacks", new LowerBackJacks());
     frc::SmartDashboard::PutData("RaiseBackJacks", new RaiseBackJacks());
     frc::SmartDashboard::PutData("RetractArm", new RetractArm());
