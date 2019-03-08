@@ -65,9 +65,9 @@ OI::OI() {
     joystick1.reset(new frc::Joystick(0));
     
     x3Back.reset(new frc::JoystickButton(joystick1.get(), 3));
-    x3Back->WhileHeld(new DriveBackJackedUp());
+    x3Back->WhileHeld(new RaiseBackJacks());
     y4Drive.reset(new frc::JoystickButton(joystick1.get(), 4));
-    y4Drive->WhileHeld(new DriveForwardJackedUp());
+    y4Drive->WhileHeld(new RaiseFrontJacks());
     rightJoyPush.reset(new frc::JoystickButton(joystick1.get(), 10));
     rightJoyPush->WhileHeld(new CameraJoy());
     start8.reset(new frc::JoystickButton(joystick1.get(), 8));

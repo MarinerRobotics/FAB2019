@@ -764,7 +764,7 @@ Children:
           name: Command
           type: Command
           validators: *id022
-          value: DriveForwardJackedUp
+          value: RaiseFrontJacks
         When to Run: !!robotbuilder.data.properties.ChoicesProperty
           choices: *id023
           default: whileHeld
@@ -793,7 +793,7 @@ Children:
           name: Command
           type: Command
           validators: *id022
-          value: DriveBackJackedUp
+          value: RaiseBackJacks
         When to Run: !!robotbuilder.data.properties.ChoicesProperty
           choices: *id023
           default: whileHeld
