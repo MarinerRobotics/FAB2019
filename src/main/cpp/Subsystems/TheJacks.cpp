@@ -30,7 +30,8 @@ TheJacks::TheJacks() : frc::Subsystem("TheJacks") {
     cANSparkMAXJacksBack->SetInverted(true);
     backJack_encoder = cANSparkMAXJacksBack->GetEncoder();
     frontJack_encoder = cANSparkMAXJacksFront->GetEncoder();
-
+    cANSparkMAXJacksBack->SetSmartCurrentLimit(80);
+    cANSparkMAXJacksFront->SetSmartCurrentLimit(80);
 }
 
 void TheJacks::InitDefaultCommand() {
@@ -57,7 +58,7 @@ void TheJacks::Periodic() {
 void TheJacks::RaiseJacksInBack(){
     frc::SmartDashboard::PutNumber("Back Jacks Encoder Pos", backJack_encoder.GetPosition());
     double backJacksPos = backJack_encoder.GetPosition();
-    if (backJacksPos > 125 || !backJacksRaiseLimit->Get()){
+    if (!backJacksRaiseLimit->Get()){
         StopBack();
         frc::SmartDashboard::PutNumber("Back Jacks Limit", 4);
     }
@@ -71,7 +72,7 @@ void TheJacks::RaiseJacksInBack(){
 void TheJacks::RaiseJacksInFront(){
     frc::SmartDashboard::PutNumber("Front Jacks Encoder Pos", frontJack_encoder.GetPosition());
     double frontJacksPos = frontJack_encoder.GetPosition();
-    if (frontJacksPos > 125 || !frontJacksRaiseLimit->Get()){
+    if (!frontJacksRaiseLimit->Get()){
         StopFront();
         frc::SmartDashboard::PutNumber("Front Jacks Limit", 4);
     }
@@ -87,42 +88,42 @@ void TheJacks::RaiseBoth(){
     double baseSpeed = .5;
     if (frontJacksPos > backJacksPos){
         double dif = frontJacksPos - backJacksPos;
-        if (backJacksPos > 125 || !backJacksRaiseLimit->Get()){
+        if (!backJacksRaiseLimit->Get()){
             cANSparkMAXJacksBack->StopMotor();
         }
         else {
-            cANSparkMAXJacksBack->Set(baseSpeed + dif*.01/2); //speed up the Back cause it's lower
+            cANSparkMAXJacksBack->Set(baseSpeed + dif*.02/2); //speed up the Back cause it's lower
         }
-        if (frontJacksPos > 125 || !frontJacksRaiseLimit->Get()){
+        if (!frontJacksRaiseLimit->Get()){
             cANSparkMAXJacksFront->StopMotor();
         }
         else{
-             cANSparkMAXJacksFront->Set(baseSpeed - dif*.01/2); //slow down the Front cause it's higher
+             cANSparkMAXJacksFront->Set(baseSpeed - dif*.02/2); //slow down the Front cause it's higher
         }
     }
     else if (backJacksPos > frontJacksPos){
          double dif = backJacksPos - frontJacksPos;
-         if (frontJacksPos > 125 || !frontJacksRaiseLimit->Get()){
+         if (!frontJacksRaiseLimit->Get()){
             cANSparkMAXJacksFront->StopMotor();
          }
          else{
-            cANSparkMAXJacksFront->Set(baseSpeed + dif*.01/2); //speed up the Front cause it's lower
+            cANSparkMAXJacksFront->Set(baseSpeed + dif*.02/2); //speed up the Front cause it's lower
          }
-         if (backJacksPos > 125 || !backJacksRaiseLimit->Get()){
+         if (!backJacksRaiseLimit->Get()){
              cANSparkMAXJacksBack->StopMotor();
          }
          else{
-            cANSparkMAXJacksBack->Set(baseSpeed - dif*.01/2); //slow down the back cause it's higher
+            cANSparkMAXJacksBack->Set(baseSpeed - dif*.02/2); //slow down the back cause it's higher
          }
     }
     else {
-        if (backJacksPos > 125 || !backJacksRaiseLimit->Get()){
+        if (!backJacksRaiseLimit->Get()){
             cANSparkMAXJacksBack->StopMotor();
         }
         else{
             cANSparkMAXJacksBack->Set(baseSpeed);
         }
-        if (frontJacksPos > 125 || !frontJacksRaiseLimit->Get()){
+        if (!frontJacksRaiseLimit->Get()){
             cANSparkMAXJacksFront->StopMotor();
         }
         else{
@@ -137,7 +138,7 @@ void TheJacks::LowerBoth(){
 void TheJacks::LowerJacksInBack(){
     double backJacksPos = backJack_encoder.GetPosition();
     frc::SmartDashboard::PutNumber("Back Jacks Encoder Pos", backJack_encoder.GetPosition());
-     if (backJacksPos > 1 && backJacksLowerLimit->Get()){
+     if (backJacksLowerLimit->Get()){
          
           //double leftTrigger = Robot::oi->getJoystick2()->GetRawAxis(2);
         cANSparkMAXJacksBack->Set(-0.5);
@@ -153,7 +154,7 @@ void TheJacks::LowerJacksInBack(){
 void TheJacks::LowerJacksInFront(){
     frc::SmartDashboard::PutNumber("Front Jacks Encoder Pos", frontJack_encoder.GetPosition());
     double frontJacksPos = frontJack_encoder.GetPosition();
-    if (frontJacksPos > 1 && frontJacksLowerLimit->Get()){
+    if (frontJacksLowerLimit->Get()){
          //double rightTrigger = Robot::oi->getJoystick2()->GetRawAxis(3);
         cANSparkMAXJacksFront->Set(-0.5);
         frc::SmartDashboard::PutNumber("Front Jacks Limit", 0);
